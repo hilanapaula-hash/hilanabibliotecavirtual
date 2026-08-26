@@ -523,3 +523,38 @@ body {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+/* ===========================================
+   BUSCA POR ISBN
+   =========================================== */
+.isbn-search-row {
+  display: flex;
+  gap: 8px;
+}
+
+.isbn-search-row input {
+  flex: 1;
+}
+
+.isbn-search-row .btn {
+  white-space: nowrap;
+  padding: 10px 16px;
+}
+
+.isbn-status {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  min-height: 16px;
+}
+
+.isbn-status.loading {
+  color: var(--cor-dourado);
+}
+
+.isbn-status.success {
+  color: var(--cor-destaque);
+}
+
+.isbn-status.error {
+  color: #B5544A;
+}
