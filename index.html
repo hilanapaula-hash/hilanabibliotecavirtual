@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minha Biblioteca</title>
+
+  <!-- Aqui ligamos o arquivo de estilos (visual do site) -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== CABEÇALHO ===== -->
+  <header class="header">
+    <div class="header-content">
+      <h1 class="logo">📚 Minha Biblioteca</h1>
+
+      <!-- Barra de pesquisa (a funcionalidade vem em uma etapa futura) -->
+      <div class="search-bar">
+        <input type="text" placeholder="Buscar por título, autor, gênero..." id="searchInput">
+      </div>
+
+      <!-- Botão para trocar entre modo claro e escuro -->
+      <button class="theme-toggle" id="themeToggle" title="Alternar modo claro/escuro">🌙</button>
+    </div>
+  </header>
+
+  <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+  <main class="main-content">
+
+    <!-- Dashboard com estatísticas rápidas -->
+    <section class="dashboard">
+      <h2 class="section-title">Meu Painel</h2>
+      <div class="dashboard-grid">
+        <div class="stat-card">
+          <span class="stat-number" id="statTotal">0</span>
+          <span class="stat-label">Total de livros</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statLidos">0</span>
+          <span class="stat-label">Lidos</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statLendo">0</span>
+          <span class="stat-label">Lendo</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statRelendo">0</span>
+          <span class="stat-label">Relendo</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statAbandonei">0</span>
+          <span class="stat-label">Abandonados</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statFavoritos">0</span>
+          <span class="stat-label">Favoritos</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statPaginas">0</span>
+          <span class="stat-label">Páginas lidas</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statMedia">0.0</span>
+          <span class="stat-label">Média de avaliação</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Meta anual de leitura -->
+    <section class="reading-goal">
+      <h2 class="section-title">Meta Anual de Leitura</h2>
+      <div class="goal-bar-container">
+        <div class="goal-bar" id="goalBar" style="width: 0%;"></div>
+      </div>
+      <p class="goal-text" id="goalText">0 de 0 livros lidos em 2026</p>
+    </section>
+
+    <!-- Livros adicionados recentemente -->
+    <section class="recent-books">
+      <h2 class="section-title">Adicionados Recentemente</h2>
+      <div class="books-row" id="recentBooksRow">
+        <p class="empty-message">Nenhum livro cadastrado ainda.</p>
+      </div>
+    </section>
+
+    <!-- Livros que estou lendo -->
+    <section class="currently-reading">
+      <h2 class="section-title">Estou Lendo</h2>
+      <div class="books-row" id="currentlyReadingRow">
+        <p class="empty-message">Nenhuma leitura em andamento.</p>
+      </div>
+    </section>
+
+    <!-- Minha estante completa -->
+    <section class="library">
+      <div class="library-header">
+        <h2 class="section-title">Minha Estante</h2>
+
+        <div class="library-controls">
+          <button class="btn btn-primary" id="addBookBtn">+ Adicionar Livro</button>
+
+          <div class="view-toggle">
+            <button class="view-btn active" id="gridViewBtn" title="Visualizar em grade">▦</button>
+            <button class="view-btn" id="listViewBtn" title="Visualizar em lista">☰</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros rápidos -->
+      <div class="filters">
+        <button class="filter-chip active" data-filter="todos">Todos</button>
+        <button class="filter-chip" data-filter="lidos">Lidos</button>
+        <button class="filter-chip" data-filter="lendo">Lendo</button>
+        <button class="filter-chip" data-filter="relendo">Relendo</button>
+        <button class="filter-chip" data-filter="abandonei">Abandonados</button>
+        <button class="filter-chip" data-filter="favoritos">Favoritos</button>
+      </div>
+
+      <!-- Aqui os livros cadastrados vão aparecer -->
+      <div class="books-grid" id="libraryGrid">
+        <p class="empty-message">Sua estante está vazia. Adicione seu primeiro livro!</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== RODAPÉ ===== -->
+  <footer class="footer">
+    <p>Minha Biblioteca — feita com 📖 e carinho</p>
+  </footer>
+
+  <!-- Aqui ligamos o arquivo de funcionalidades (ainda vazio, vem na próxima etapa) -->
+  <script src="script.js"></script>
+</body>
+</html>
