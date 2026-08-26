@@ -1,0 +1,319 @@
+/* ===========================================
+   VARIÁVEIS DE COR — mude aqui para alterar
+   a paleta de cores do site inteiro
+   =========================================== */
+:root {
+  --cor-fundo: #FAF6F0;        /* creme claro */
+  --cor-card: #FFFFFF;          /* branco */
+  --cor-secundaria: #EFE4D6;    /* bege */
+  --cor-texto: #4A3728;         /* marrom escuro */
+  --cor-destaque: #2F4A3C;      /* verde-escuro */
+  --cor-dourado: #C9A227;       /* dourado */
+  --sombra-suave: 0 4px 12px rgba(74, 55, 40, 0.08);
+  --raio-borda: 16px;
+  --transicao: 0.25s ease;
+}
+
+/* Cores do modo escuro (ativado via JavaScript, classe .dark-mode no body) */
+body.dark-mode {
+  --cor-fundo: #231A14;
+  --cor-card: #2E241C;
+  --cor-secundaria: #3A2E23;
+  --cor-texto: #F2E9DD;
+  --cor-destaque: #6B9080;
+  --cor-dourado: #E0B93A;
+}
+
+/* ===========================================
+   RESET E BASE
+   =========================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  transition: background-color var(--transicao), color var(--transicao);
+  line-height: 1.6;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--cor-destaque);
+}
+
+.empty-message {
+  color: var(--cor-texto);
+  opacity: 0.6;
+  font-style: italic;
+  padding: 20px 0;
+}
+
+/* ===========================================
+   CABEÇALHO
+   =========================================== */
+.header {
+  background-color: var(--cor-card);
+  box-shadow: var(--sombra-suave);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  color: var(--cor-destaque);
+  font-size: 1.5rem;
+  white-space: nowrap;
+}
+
+.search-bar {
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1px solid var(--cor-secundaria);
+  border-radius: var(--raio-borda);
+  background-color: var(--cor-secundaria);
+  color: var(--cor-texto);
+  font-size: 0.95rem;
+  outline: none;
+  transition: var(--transicao);
+}
+
+.search-bar input:focus {
+  box-shadow: 0 0 0 2px var(--cor-dourado);
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: var(--transicao);
+}
+
+.theme-toggle:hover {
+  background-color: var(--cor-secundaria);
+}
+
+/* ===========================================
+   CONTEÚDO PRINCIPAL
+   =========================================== */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.main-content section {
+  margin-bottom: 40px;
+}
+
+/* ===========================================
+   DASHBOARD
+   =========================================== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  background-color: var(--cor-card);
+  border-radius: var(--raio-borda);
+  box-shadow: var(--sombra-suave);
+  padding: 20px;
+  text-align: center;
+  transition: transform var(--transicao);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--cor-destaque);
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+/* ===========================================
+   META DE LEITURA
+   =========================================== */
+.goal-bar-container {
+  background-color: var(--cor-secundaria);
+  border-radius: 20px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.goal-bar {
+  background: linear-gradient(90deg, var(--cor-destaque), var(--cor-dourado));
+  height: 100%;
+  border-radius: 20px;
+  transition: width 0.5s ease;
+}
+
+.goal-text {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* ===========================================
+   FILEIRAS DE LIVROS (recentes / lendo)
+   =========================================== */
+.books-row {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+/* ===========================================
+   ESTANTE / GRADE DE LIVROS
+   =========================================== */
+.library-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.library-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn {
+  border: none;
+  border-radius: var(--raio-borda);
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.btn-primary {
+  background-color: var(--cor-destaque);
+  color: #FFFFFF;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.view-toggle {
+  display: flex;
+  gap: 4px;
+  background-color: var(--cor-secundaria);
+  border-radius: var(--raio-borda);
+  padding: 4px;
+}
+
+.view-btn {
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: var(--transicao);
+}
+
+.view-btn.active {
+  background-color: var(--cor-card);
+  box-shadow: var(--sombra-suave);
+}
+
+/* Filtros rápidos */
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.filter-chip {
+  background-color: var(--cor-secundaria);
+  color: var(--cor-texto);
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.filter-chip.active,
+.filter-chip:hover {
+  background-color: var(--cor-destaque);
+  color: #FFFFFF;
+}
+
+/* Grade de livros */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+}
+
+/* ===========================================
+   RODAPÉ
+   =========================================== */
+.footer {
+  text-align: center;
+  padding: 24px;
+  opacity: 0.6;
+  font-size: 0.85rem;
+}
+
+/* ===========================================
+   RESPONSIVIDADE
+   =========================================== */
+@media (max-width: 600px) {
+  .header-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .library-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}
