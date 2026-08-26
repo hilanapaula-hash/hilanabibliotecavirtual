@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="claro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estante — minha biblioteca pessoal</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== TOASTS ===================== -->
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<!-- ===================== HEADER ===================== -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="brand" id="btn-ir-inicio" aria-label="Ir para o início">
+      <span class="brand-mark">📚</span>
+      <span class="brand-text">
+        <span class="brand-name">Estante</span>
+        <span class="brand-sub">minha biblioteca</span>
+      </span>
+    </button>
+
+    <nav class="topnav">
+      <button class="navlink active" data-view="inicio">Estante</button>
+      <button class="navlink" data-view="estatisticas">Estatísticas</button>
+    </nav>
+
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="input-busca" class="search-input" placeholder="Buscar por título, autor, ISBN, gênero..." autocomplete="off">
+      <div id="search-results" class="search-results hidden"></div>
+    </div>
+
+    <div class="topbar-actions">
+      <button id="btn-tema" class="icon-btn" title="Alternar modo claro/escuro">🌙</button>
+      <div class="menu-wrap">
+        <button id="btn-menu" class="icon-btn" title="Backup">⋮</button>
+        <div id="menu-backup" class="menu-dropdown hidden">
+          <button id="btn-exportar">⬇️ Exportar biblioteca</button>
+          <button id="btn-importar">⬆️ Importar biblioteca</button>
+          <input type="file" id="input-importar" accept="application/json" class="hidden">
+        </div>
+      </div>
+      <button id="btn-add-livro" class="btn btn-primary">+ Adicionar livro</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ===================== VIEW: INÍCIO ===================== -->
+  <section id="view-inicio" class="view">
+
+    <section class="hero">
+      <div class="hero-text">
+        <p class="hero-eyebrow">sua estante, do seu jeito</p>
+        <h1 class="hero-title">Cada livro tem uma<br>página onde você parou.</h1>
+        <p class="hero-desc">Catalogue, acompanhe e reviva suas leituras — capa, progresso, resenha e o que você sentiu em cada capítulo.</p>
+      </div>
+      <div class="hero-shelf" id="hero-shelf" aria-hidden="true"></div>
+    </section>
+
+    <!-- Dashboard -->
+    <section class="dashboard">
+      <div class="stat-card"><span class="stat-icon">📚</span><span class="stat-num" id="dash-total">0</span><span class="stat-label">Total de livros</span></div>
+      <div class="stat-card"><span class="stat-icon">✅</span><span class="stat-num" id="dash-lidos">0</span><span class="stat-label">Lidos</span></div>
+      <div class="stat-card"><span class="stat-icon">📖</span><span class="stat-num" id="dash-lendo">0</span><span class="stat-label">Lendo</span></div>
+      <div class="stat-card"><span class="stat-icon">🔄</span><span class="stat-num" id="dash-relendo">0</span><span class="stat-label">Relendo</span></div>
+      <div class="stat-card"><span class="stat-icon">❌</span><span class="stat-num" id="dash-abandonados">0</span><span class="stat-label">Abandonados</span></div>
+      <div class="stat-card"><span class="stat-icon">❤️</span><span class="stat-num" id="dash-favoritos">0</span><span class="stat-label">Favoritos</span></div>
+      <div class="stat-card"><span class="stat-icon">📄</span><span class="stat-num" id="dash-paginas">0</span><span class="stat-label">Páginas lidas</span></div>
+      <div class="stat-card"><span class="stat-icon">⭐</span><span class="stat-num" id="dash-media">0.0</span><span class="stat-label">Média das avaliações</span></div>
+    </section>
+
+    <!-- Meta de leitura -->
+    <section class="goal-card">
+      <div class="goal-head">
+        <div>
+          <h2 id="goal-title">Minha meta de <span id="goal-year">2026</span></h2>
+          <p class="goal-sub"><span id="goal-current">0</span> de <span id="goal-target">25</span> livros lidos</p>
+        </div>
+        <button id="btn-editar-meta" class="btn btn-ghost">Editar meta</button>
+      </div>
+      <div class="progress-bar"><div id="goal-progress-fill" class="progress-fill" style="width:0%"></div></div>
+    </section>
+
+    <!-- Lendo agora -->
+    <section class="row-section" id="section-lendo-agora">
+      <h2 class="section-title">📖 Lendo agora</h2>
+      <div id="carrossel-lendo" class="carrossel"></div>
+    </section>
+
+    <!-- Adicionados recentemente -->
+    <section class="row-section" id="section-recentes">
+      <h2 class="section-title">✨ Adicionados recentemente</h2>
+      <div id="carrossel-recentes" class="carrossel"></div>
+    </section>
+
+    <!-- Biblioteca completa -->
+    <section class="library-section">
+      <div class="library-head">
+        <h2 class="section-title">Minha estante</h2>
+        <div class="library-controls">
+          <select id="select-ordenar" class="select">
+            <option value="recente">Adicionados recentemente</option>
+            <option value="titulo">Título (A–Z)</option>
+            <option value="autor">Autor (A–Z)</option>
+            <option value="avaliacao">Avaliação</option>
+            <option value="paginas">Número de páginas</option>
+            <option value="leitura">Data de leitura</option>
+          </select>
+          <div class="view-toggle">
+            <button id="btn-view-grade" class="toggle-btn active" title="Grade">▦</button>
+            <button id="btn-view-lista" class="toggle-btn" title="Lista">☰</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-chips" id="filter-chips">
+        <button class="chip active" data-filtro="todos">📚 Todos</button>
+        <button class="chip" data-filtro="lendo">📖 Lendo</button>
+        <button class="chip" data-filtro="lido">✅ Lidos</button>
+        <button class="chip" data-filtro="relendo">🔄 Relendo</button>
+        <button class="chip" data-filtro="abandonei">❌ Abandonados</button>
+        <button class="chip" data-filtro="favorito">❤️ Favoritos</button>
+        <button class="chip" data-filtro="superestimado">📈 Superestimados</button>
+        <button class="chip" data-filtro="nunca-mais">🚫 Nunca mais ler</button>
+      </div>
+
+      <div id="biblioteca-grade" class="biblioteca grade"></div>
+      <p id="biblioteca-vazia" class="empty-msg hidden">Nenhum livro por aqui ainda. Que tal adicionar o primeiro?</p>
+    </section>
+
+  </section>
+
+  <!-- ===================== VIEW: LIVRO (detalhe) ===================== -->
+  <section id="view-livro" class="view hidden">
+    <button class="btn btn-ghost btn-voltar" id="btn-voltar-livro">← Voltar para a estante</button>
+
+    <div class="book-detail" id="book-detail-content"></div>
+  </section>
+
+  <!-- ===================== VIEW: ESTATÍSTICAS ===================== -->
+  <section id="view-estatisticas" class="view hidden">
+    <h1 class="page-title">📊 Estatísticas</h1>
+
+    <div class="stats-grid" id="stats-grid"></div>
+
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>Livros por gênero</h3>
+        <canvas id="chart-generos"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Livros lidos por mês</h3>
+        <canvas id="chart-meses"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Autores mais lidos</h3>
+        <canvas id="chart-autores"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Distribuição de avaliações</h3>
+        <canvas id="chart-avaliacoes"></canvas>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>Feito com carinho para quem ama guardar páginas na memória. 🤎</p>
+</footer>
+
+<!-- ===================== MODAL: ADICIONAR/EDITAR LIVRO ===================== -->
+<div id="modal-livro" class="modal-overlay hidden">
+  <div class="modal modal-livro">
+    <button class="modal-close" data-close-modal="modal-livro">✕</button>
+    <h2 id="modal-livro-titulo">Adicionar livro</h2>
+
+    <div class="tabs" id="tabs-adicionar">
+      <button class="tab-btn active" data-tab="isbn">Buscar pelo ISBN</button>
+      <button class="tab-btn" data-tab="manual">Cadastro manual</button>
+    </div>
+
+    <div id="tab-isbn" class="tab-panel">
+      <div class="isbn-search-row">
+        <input type="text" id="input-isbn-busca" placeholder="Digite o ISBN (ex: 9788535914849)" class="input">
+        <button id="btn-buscar-isbn" class="btn btn-primary">Buscar</button>
+      </div>
+      <p id="isbn-status" class="isbn-status"></p>
+      <div id="isbn-preview" class="isbn-preview hidden"></div>
+    </div>
+
+    <form id="form-livro" class="tab-panel form-livro">
+      <input type="hidden" id="livro-id">
+      <div class="form-grid">
+        <div class="form-field span-2">
+          <label>Capa (URL da imagem)</label>
+          <div class="cover-row">
+            <img id="preview-capa" class="cover-preview" src="" alt="" >
+            <input type="text" id="campo-capa" class="input" placeholder="https://...">
+          </div>
+        </div>
+        <div class="form-field span-2">
+          <label>Título *</label>
+          <input type="text" id="campo-titulo" class="input" required>
+        </div>
+        <div class="form-field">
+          <label>Autor *</label>
+          <input type="text" id="campo-autor" class="input" required>
+        </div>
+        <div class="form-field">
+          <label>Editora</label>
+          <input type="text" id="campo-editora" class="input">
+        </div>
+        <div class="form-field">
+          <label>Gênero</label>
+          <input type="text" id="campo-genero" class="input" placeholder="Ficção, Romance...">
+        </div>
+        <div class="form-field">
+          <label>Número de páginas</label>
+          <input type="number" id="campo-paginas" class="input" min="1">
+        </div>
+        <div class="form-field">
+          <label>Ano de publicação</label>
+          <input type="number" id="campo-ano" class="input" min="0">
+        </div>
+        <div class="form-field">
+          <label>ISBN</label>
+          <input type="text" id="campo-isbn" class="input">
+        </div>
+        <div class="form-field span-2">
+          <label>Sinopse</label>
+          <textarea id="campo-sinopse" class="textarea" rows="3"></textarea>
+        </div>
+
+        <div class="form-field">
+          <label>Status</label>
+          <select id="campo-status" class="select">
+            <option value="lendo">📖 Lendo</option>
+            <option value="lido">✅ Lido</option>
+            <option value="relendo">🔄 Relendo</option>
+            <option value="abandonei">❌ Abandonei</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Página atual</label>
+          <input type="number" id="campo-pagina-atual" class="input" min="0">
+        </div>
+        <div class="form-field">
+          <label>Data de início</label>
+          <input type="date" id="campo-data-inicio" class="input">
+        </div>
+        <div class="form-field">
+          <label>Data de término</label>
+          <input type="date" id="campo-data-fim" class="input">
+        </div>
+
+        <div class="form-field span-2">
+          <label>Avaliação</label>
+          <div id="estrelas-form" class="estrelas" data-valor="0">
+            <button type="button" class="estrela" data-valor="1">★</button>
+            <button type="button" class="estrela" data-valor="2">★</button>
+            <button type="button" class="estrela" data-valor="3">★</button>
+            <button type="button" class="estrela" data-valor="4">★</button>
+            <button type="button" class="estrela" data-valor="5">★</button>
+          </div>
+        </div>
+
+        <div class="form-field span-2">
+          <label>Etiquetas</label>
+          <div class="tag-options">
+            <label class="tag-check"><input type="checkbox" value="favorito"> ❤️ Favorito</label>
+            <label class="tag-check"><input type="checkbox" value="superestimado"> 📈 Superestimado</label>
+            <label class="tag-check"><input type="checkbox" value="nunca-mais"> 🚫 Nunca mais ler</label>
+          </div>
+        </div>
+
+        <div class="form-field span-2">
+          <label>Resenha</label>
+          <textarea id="campo-resenha" class="textarea" rows="5" maxlength="5000"></textarea>
+          <span class="char-count"><span id="resenha-contador">0</span>/5000 caracteres</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal="modal-livro">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar livro</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== MODAL: ATUALIZAÇÃO DE LEITURA ===================== -->
+<div id="modal-atualizacao" class="modal-overlay hidden">
+  <div class="modal modal-pequeno">
+    <button class="modal-close" data-close-modal="modal-atualizacao">✕</button>
+    <h2>Adicionar atualização</h2>
+    <form id="form-atualizacao">
+      <input type="hidden" id="atualizacao-livro-id">
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Data</label>
+          <input type="date" id="atualizacao-data" class="input" required>
+        </div>
+        <div class="form-field">
+          <label>Página atual</label>
+          <input type="number" id="atualizacao-pagina" class="input" min="0" required>
+        </div>
+        <div class="form-field span-2">
+          <label>Reação</label>
+          <div id="emoji-picker" class="emoji-picker">
+            <button type="button" class="emoji-opt" data-emoji="😍">😍<span>Amei</span></button>
+            <button type="button" class="emoji-opt" data-emoji="🥹">🥹<span>Emocionante</span></button>
+            <button type="button" class="emoji-opt" data-emoji="😂">😂<span>Engraçado</span></button>
+            <button type="button" class="emoji-opt" data-emoji="😭">😭<span>Chorei</span></button>
+            <button type="button" class="emoji-opt" data-emoji="🤯">🤯<span>Plot Twist</span></button>
+            <button type="button" class="emoji-opt" data-emoji="😡">😡<span>Raiva</span></button>
+            <button type="button" class="emoji-opt" data-emoji="😴">😴<span>Entediante</span></button>
+            <button type="button" class="emoji-opt" data-emoji="🤔">🤔<span>Pensativo</span></button>
+            <button type="button" class="emoji-opt" data-emoji="⭐">⭐<span>Incrível</span></button>
+            <button type="button" class="emoji-opt" data-emoji="❤️">❤️<span>Favorito</span></button>
+          </div>
+        </div>
+        <div class="form-field span-2">
+          <label>Minhas impressões</label>
+          <textarea id="atualizacao-nota" class="textarea" rows="3" placeholder="O que você está achando até agora?"></textarea>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal="modal-atualizacao">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar atualização</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== MODAL: EDITAR META ===================== -->
+<div id="modal-meta" class="modal-overlay hidden">
+  <div class="modal modal-pequeno">
+    <button class="modal-close" data-close-modal="modal-meta">✕</button>
+    <h2>Minha meta de leitura</h2>
+    <form id="form-meta">
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Ano</label>
+          <input type="number" id="meta-ano" class="input" required>
+        </div>
+        <div class="form-field">
+          <label>Quantidade de livros</label>
+          <input type="number" id="meta-quantidade" class="input" min="1" required>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal="modal-meta">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar meta</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== MODAL: CONFIRMAÇÃO ===================== -->
+<div id="modal-confirmar" class="modal-overlay hidden">
+  <div class="modal modal-pequeno modal-confirmar">
+    <p id="confirmar-texto">Tem certeza?</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="btn-confirmar-cancelar">Cancelar</button>
+      <button type="button" class="btn btn-perigo" id="btn-confirmar-ok">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
