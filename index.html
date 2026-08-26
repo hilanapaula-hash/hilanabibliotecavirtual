@@ -181,9 +181,13 @@
         </div>
 
         <div class="form-row">
-          <div class="form-group">
+                   <div class="form-group">
             <label for="inputIsbn">ISBN</label>
-            <input type="text" id="inputIsbn">
+            <div class="isbn-search-row">
+              <input type="text" id="inputIsbn" placeholder="Ex: 9788535914849">
+              <button type="button" class="btn btn-secondary" id="buscarIsbnBtn">🔍 Buscar</button>
+            </div>
+            <span class="isbn-status" id="isbnStatus"></span>
           </div>
           <div class="form-group">
             <label for="inputStatus">Status de leitura</label>
