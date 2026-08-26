@@ -276,3 +276,47 @@ listViewBtn.addEventListener("click", function () {
    =========================================== */
 carregarLivros();
 renderizarTudo();
+/* ===========================================
+   BUSCA AUTOMÁTICA POR ISBN
+   =========================================== */
+const buscarIsbnBtn = document.getElementById("buscarIsbnBtn");
+const isbnStatus = document.getElementById("isbnStatus");
+
+buscarIsbnBtn.addEventListener("click", async function () {
+  const isbn = document.getElementById("inputIsbn").value.trim();
+
+  if (!isbn) {
+    definirStatusIsbn("Digite um ISBN antes de buscar.", "error");
+    return;
+  }
+
+  definirStatusIsbn("Buscando...", "loading");
+  buscarIsbnBtn.disabled = true;
+
+  const resultado = await buscarLivroPorISBN(isbn);
+
+  buscarIsbnBtn.disabled = false;
+
+  if (!resultado) {
+    definirStatusIsbn("Livro não encontrado. Preencha manualmente.", "error");
+    return;
+  }
+
+  // Preenche o formulário com os dados encontrados
+  document.getElementById("inputTitulo").value = resultado.titulo;
+  document.getElementById("inputAutor").value = resultado.autor;
+  document.getElementById("inputEditora").value = resultado.editora;
+  document.getElementById("inputGenero").value = resultado.genero;
+  document.getElementById("inputPaginas").value = resultado.paginas;
+  document.getElementById("inputAno").value = resultado.ano;
+  document.getElementById("inputSinopse").value = resultado.sinopse;
+  document.getElementById("inputCapa").value = resultado.capa;
+
+  definirStatusIsbn("Livro encontrado! Confira os dados abaixo. ✓", "success");
+});
+
+// Atualiza a mensagem de status abaixo do campo de ISBN
+function definirStatusIsbn(mensagem, tipo) {
+  isbnStatus.textContent = mensagem;
+  isbnStatus.className = "isbn-status " + tipo;
+}
