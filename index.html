@@ -130,7 +130,87 @@
     <p>Minha Biblioteca — feita com 📖 e carinho</p>
   </footer>
 
-  <!-- Aqui ligamos o arquivo de funcionalidades (ainda vazio, vem na próxima etapa) -->
+  <!-- ===== JANELA (MODAL) DE CADASTRO DE LIVRO ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Adicionar Livro</h2>
+        <button class="modal-close" id="modalCloseBtn">✕</button>
+      </div>
+
+      <form id="bookForm" class="book-form">
+        <!-- Campo oculto que guarda o ID do livro quando estamos editando -->
+        <input type="hidden" id="bookId">
+
+        <div class="form-group">
+          <label for="inputCapa">URL da capa (opcional)</label>
+          <input type="text" id="inputCapa" placeholder="https://...">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inputTitulo">Título *</label>
+            <input type="text" id="inputTitulo" required>
+          </div>
+          <div class="form-group">
+            <label for="inputAutor">Autor *</label>
+            <input type="text" id="inputAutor" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inputEditora">Editora</label>
+            <input type="text" id="inputEditora">
+          </div>
+          <div class="form-group">
+            <label for="inputGenero">Gênero</label>
+            <input type="text" id="inputGenero">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inputPaginas">Número de páginas</label>
+            <input type="number" id="inputPaginas" min="1">
+          </div>
+          <div class="form-group">
+            <label for="inputAno">Ano de publicação</label>
+            <input type="number" id="inputAno" min="0">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inputIsbn">ISBN</label>
+            <input type="text" id="inputIsbn">
+          </div>
+          <div class="form-group">
+            <label for="inputStatus">Status de leitura</label>
+            <select id="inputStatus">
+              <option value="lendo">📚 Lendo</option>
+              <option value="lido">✅ Lido</option>
+              <option value="relendo">🔄 Relendo</option>
+              <option value="abandonei">❌ Abandonei</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputSinopse">Sinopse</label>
+          <textarea id="inputSinopse" rows="4"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar Livro</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Aviso discreto de "salvo com sucesso" -->
+  <div class="toast" id="toast"></div>
   <script src="script.js"></script>
 </body>
 </html>
